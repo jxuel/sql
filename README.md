@@ -10,7 +10,7 @@ Explain:
 
 * Only user can create a QuestionSet
 * Only owner can edit QuestionSet and Question
-* Only owner can user spaced repetition feature for a Question
+* Only owner can use spaced repetition feature for a Question
 * Each question can only be in one QuestionSet
 * Question and QuestionSet can be private or public
 
@@ -62,7 +62,7 @@ Diagram:
 
   * DELETE
 
-    Delete a question set and (Optional)questions belongs to the set
+    Delete a question set and (Optional)questions belong to the set
         
     
 
