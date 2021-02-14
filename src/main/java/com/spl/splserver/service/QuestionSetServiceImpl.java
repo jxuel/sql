@@ -17,6 +17,12 @@ public class QuestionSetServiceImpl implements QuestionSetService{
         this.questionSetRepository = questionSetRepository;
     }
 
+
+    @Override
+    public QuestionSet createSingleQuestionSet(QuestionSet questionSet) {
+        return questionSetRepository.save(questionSet);
+    }
+
     @Override
     public QuestionSet getQuestionSet(String setId) {
         return questionSetRepository.findById(new ObjectId(setId)).orElse(null);

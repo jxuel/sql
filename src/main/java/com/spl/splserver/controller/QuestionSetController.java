@@ -3,29 +3,34 @@ package com.spl.splserver.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.spl.splserver.entity.Question;
+import com.spl.splserver.POJO.QuestionSetCreateRequest;
 import com.spl.splserver.entity.QuestionSet;
 import com.spl.splserver.service.QuestionSetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 /*
     QuestionSetController
 
     Endpoint:
-        /learnList              get sets by params
-            params:              ownerId
+        /learnList
+            GET                  get sets by params
+                params:              ownerId
+            POST                 create a set
+                params:              ownerId
+
         TODO: paging, search by time
-        /learnList/{set_id}     get a set by id
+        /learnList/{set_id}
+            GET                  get a set by id
 
  */
 
@@ -37,6 +42,29 @@ public class QuestionSetController {
 
     public QuestionSetController(QuestionSetService questionSetService) {
         this.questionSetService = questionSetService;
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createQuestionSet(@Valid @RequestBody QuestionSetCreateRequest requestBody, BindingResult bindingResult) throws JsonProcessingException {
+        if(bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+        }
+
+        QuestionSet createQuestionSet = new QuestionSet();
+        createQuestionSet.setName(requestBody.getName());
+        createQuestionSet.setOwnerId(requestBody.getOwnerId());
+
+        QuestionSet questionSet = questionSetService.createSingleQuestionSet(createQuestionSet);
+
+        if (questionSet == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return new ResponseEntity<>(objectMapper.writeValueAsString(questionSet),HttpStatus.OK);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"ownerId"})

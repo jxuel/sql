@@ -10,6 +10,7 @@ import java.util.List;
     All available operations to modify question sets
  */
 public interface QuestionSetService {
+    QuestionSet createSingleQuestionSet(QuestionSet questionSet);
     QuestionSet getQuestionSet(String setId);
     List<QuestionSet> getAllQuestionSetsByUser(String ownerId);
 }

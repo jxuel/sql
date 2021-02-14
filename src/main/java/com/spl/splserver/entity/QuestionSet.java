@@ -15,6 +15,7 @@ import java.util.Date;
 public class QuestionSet {
     @MongoId(value = FieldType.OBJECT_ID)
     private String id;
+    private String name;
     @Field(name = "owner_Id")
     private String ownerId;
     private Integer score;
@@ -34,6 +35,14 @@ public class QuestionSet {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getOwnerId() {
@@ -84,16 +93,6 @@ public class QuestionSet {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "QuestionSet{" +
-                "id='" + id + '\'' +
-                ", ownerId='" + ownerId + '\'' +
-                ", score=" + score +
-                ", quantity='" + quantity + '\'' +
-                ", learnRate=" + learnRate +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
+
+
 }
