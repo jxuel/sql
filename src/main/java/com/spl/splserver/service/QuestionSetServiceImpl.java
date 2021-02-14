@@ -6,6 +6,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class QuestionSetServiceImpl implements QuestionSetService{
     @Autowired
@@ -21,7 +23,7 @@ public class QuestionSetServiceImpl implements QuestionSetService{
     }
 
     @Override
-    public QuestionSet getAllQuestionSetsByUser(String ownerId) {
-        return null;
+    public List<QuestionSet> getAllQuestionSetsByUser(String ownerId) {
+        return questionSetRepository.findByOwnerId(ownerId);
     }
 }

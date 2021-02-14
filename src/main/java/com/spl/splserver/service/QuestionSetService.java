@@ -1,6 +1,9 @@
 package com.spl.splserver.service;
 
 import com.spl.splserver.entity.QuestionSet;
+
+import java.util.List;
+
 /*
     QuestionSetService
 
@@ -8,5 +11,5 @@ import com.spl.splserver.entity.QuestionSet;
  */
 public interface QuestionSetService {
     QuestionSet getQuestionSet(String setId);
-    QuestionSet getAllQuestionSetsByUser(String ownerId);
+    List<QuestionSet> getAllQuestionSetsByUser(String ownerId);
 }

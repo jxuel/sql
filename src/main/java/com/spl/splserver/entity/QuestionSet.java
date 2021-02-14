@@ -18,7 +18,7 @@ public class QuestionSet {
     @Field(name = "owner_Id")
     private String ownerId;
     private Integer score;
-    private String quantity;
+    private Integer quantity;
     @Field(name = "learn_rate")
     private Float learnRate;
     @CreatedDate
@@ -52,11 +52,11 @@ public class QuestionSet {
         this.score = score;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -82,5 +82,18 @@ public class QuestionSet {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionSet{" +
+                "id='" + id + '\'' +
+                ", ownerId='" + ownerId + '\'' +
+                ", score=" + score +
+                ", quantity='" + quantity + '\'' +
+                ", learnRate=" + learnRate +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
