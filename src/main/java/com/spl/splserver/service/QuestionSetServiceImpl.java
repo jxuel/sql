@@ -32,4 +32,10 @@ public class QuestionSetServiceImpl implements QuestionSetService{
     public List<QuestionSet> getAllQuestionSetsByUser(String ownerId) {
         return questionSetRepository.findByOwnerId(ownerId);
     }
+
+    @Override
+    public boolean deleteQuestionSet(String setId) {
+        questionSetRepository.deleteById(new ObjectId(setId));
+        return questionSetRepository.findById(new ObjectId(setId)).isEmpty();
+    }
 }

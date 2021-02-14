@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
         TODO: paging, search by time
         /learnList/{set_id}
             GET                  get a set by id
+            DELETE               delete a set by id
 
  */
 
@@ -89,6 +90,13 @@ public class QuestionSetController {
         ObjectMapper objectMapper = new ObjectMapper();
 
         return new ResponseEntity(objectMapper.writeValueAsString(questionSet),HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "{set_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteQuestionSet(@PathVariable("set_id") String setId) {
+        boolean result = questionSetService.deleteQuestionSet(setId);
+
+        return new ResponseEntity(result,HttpStatus.OK);
     }
 
 

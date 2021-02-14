@@ -12,5 +12,6 @@ import java.util.List;
 public interface QuestionSetService {
     QuestionSet createSingleQuestionSet(QuestionSet questionSet);
     QuestionSet getQuestionSet(String setId);
+    boolean deleteQuestionSet(String setId);
     List<QuestionSet> getAllQuestionSetsByUser(String ownerId);
 }
