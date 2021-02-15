@@ -1,7 +1,11 @@
 package com.spl.splserver.POJO;
 
 import java.util.List;
+/*
+    AnswerCheckDTO
 
+    The class is used for mapping submitted answers to a object
+ */
 public class AnswerCheckDTO {
     private String questionId;
     private List<String> answers;

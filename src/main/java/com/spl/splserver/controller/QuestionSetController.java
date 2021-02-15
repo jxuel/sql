@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
         /learnList/{set_id}
             GET                  get a set by id
             DELETE               delete a set by id
+        TODO: modify
 
  */
 

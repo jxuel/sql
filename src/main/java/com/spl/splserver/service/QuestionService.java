@@ -18,5 +18,5 @@ public interface QuestionService {
     Integer updateQuestionAnswers(String questionId, List<String> updatedAnswers);
     Integer updateQuestionOptions(String questionId, List<String> updatedOptions);
     Question updatePriority(String questionId, QuestionPriority updatedPriority);
-
+    boolean deleteQuestionSet(String questionId);
 }

@@ -23,8 +23,8 @@ public class CustomizedQuestionRepositoryImpl implements CustomizedQuestionRepos
         Query query = new Query().addCriteria(where("_id").is(new ObjectId(questionId)));
         Update update = new Update();
         update.set("reviewed_at", state.getReviewedAt());
-        update.set("last_answer", state.getLastAnswer());
-        update.set("last_score", state.getLastScore());
+        update.set("last_answer", state.getSubmittedAnswer());
+        update.set("last_score", state.getScore());
         update.set("repeat_at", state.getRepeatAt());
         update.set("repeated_interval", state.getRepeatedInterval());
 

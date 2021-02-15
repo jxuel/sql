@@ -1,8 +1,11 @@
 package com.spl.splserver.POJO;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+/*
+    QuestionSetCreateRequest
 
+    The class is used on creating question set endpoint for check JSON body
+ */
 public class QuestionSetCreateRequest {
     @NotBlank(message = "ownerId can not be null")
     private String ownerId;

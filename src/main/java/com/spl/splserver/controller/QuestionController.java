@@ -15,6 +15,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
+/*
+    QuestionController
+
+    Endpoint:
+        /question
+            GET                  get sets by params
+                params:              ownerId
+            POST                 create a question
+
+
+        TODO: Restrict creating fields
+        /question/{question_id}
+            GET                  get a question by id
+            DELETE               delete a question by id
+        TODO:
+            PATCH                modify a question
+            PUT                  update a question
+        /learnList/check
+            POST                 receive json AnswerCheckDTO
+                                 check answer and update repeat date
+                                 return learnState in json format
+
+ */
 
 @Controller
 @RequestMapping("question")
@@ -50,6 +74,14 @@ public class QuestionController {
         return new ResponseEntity(jsonObject.writeValueAsString(question),HttpStatus.OK);
     }
 
+
+    @DeleteMapping(value = "{question_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteQuestion(@PathVariable("question_id") String questionId) {
+        boolean result = questionService.deleteQuestionSet(questionId);
+
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
+
     @PostMapping(value = "/check",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getFields(@RequestBody AnswerCheckDTO answerCheck) throws JsonProcessingException {
         ArrayList answers = (ArrayList) answerCheck.getAnswers();
@@ -58,7 +90,11 @@ public class QuestionController {
         if(result == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        learningService.setRepeatDate(questionId,result);
+
+        if (!learningService.setRepeatDate(questionId,result)) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
 
         ObjectMapper jsonObject = new ObjectMapper();
         return new ResponseEntity(jsonObject.writeValueAsString(result),HttpStatus.OK);

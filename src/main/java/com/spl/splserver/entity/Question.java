@@ -36,7 +36,7 @@ public class Question {
     @Field("repeat_chance")
     private Float repeatChance;
     @Field(name = "last_score")
-    private Float lastScore;
+    private Integer lastScore;
     @Field(name = "reviewed_at")
     private Date reviewedAt;
     @Field(name = "repeated_interval")
@@ -123,11 +123,11 @@ public class Question {
         this.repeatChance = repeatChance;
     }
 
-    public Float getLastScore() {
+    public Integer getLastScore() {
         return lastScore;
     }
 
-    public void setLastScore(Float lastScore) {
+    public void setLastScore(Integer lastScore) {
         this.lastScore = lastScore;
     }
 
