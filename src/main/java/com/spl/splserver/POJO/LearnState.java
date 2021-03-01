@@ -1,6 +1,7 @@
 package com.spl.splserver.POJO;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
     The class is used for record a reviewing activity
  */
 
-public class LearnState {
+public class LearnState implements Serializable {
     private Integer score;
     private Float repeatChance;
     private Integer lastScore;

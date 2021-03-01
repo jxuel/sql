@@ -2,9 +2,11 @@ package com.spl.splserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.spl.splserver.POJO.AnswerCheckDTO;
 import com.spl.splserver.POJO.LearnState;
 import com.spl.splserver.entity.Question;
+import com.spl.splserver.entity.QuestionSet;
 import com.spl.splserver.service.LearningService;
 import com.spl.splserver.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 /*
     QuestionController
@@ -74,6 +81,16 @@ public class QuestionController {
         return new ResponseEntity(jsonObject.writeValueAsString(question),HttpStatus.OK);
     }
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"setId"})
+    public ResponseEntity<?> getQuestionSets(@RequestParam String setId) throws JsonProcessingException {
+        List<Question> result = questionService.getAllQuestionsBySet(setId);
+        if(result == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
 
     @DeleteMapping(value = "{question_id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteQuestion(@PathVariable("question_id") String questionId) {
@@ -83,17 +100,21 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/check",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getFields(@RequestBody AnswerCheckDTO answerCheck) throws JsonProcessingException {
+    public ResponseEntity<?> getFields(@RequestParam(value = "mode") String mode,
+                                           @RequestBody AnswerCheckDTO answerCheck) throws JsonProcessingException {
         ArrayList answers = (ArrayList) answerCheck.getAnswers();
         String questionId = answerCheck.getQuestionId();
         LearnState result = questionService.checkAnswer(questionId, answers);
+
+
         if(result == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        if (!learningService.setRepeatDate(questionId,result)) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if(mode == "test") {
+            learningService.updateLearnState(questionId, result);
         }
+
 
 
         ObjectMapper jsonObject = new ObjectMapper();

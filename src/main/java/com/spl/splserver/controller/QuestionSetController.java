@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.spl.splserver.POJO.QuestionSetCreateRequest;
+import com.spl.splserver.entity.Question;
 import com.spl.splserver.entity.QuestionSet;
 import com.spl.splserver.service.QuestionSetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,19 @@ public class QuestionSetController {
         return new ResponseEntity(objectMapper.writeValueAsString(questionSet),HttpStatus.OK);
     }
 
+    @GetMapping(value = "{set_id}/test",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getTestSet(
+            @RequestParam(value = "quantity") Integer quantity,
+            @PathVariable("set_id") String setId) throws JsonProcessingException {
+        List<Question> questions = questionSetService.getTestSet(setId, quantity);
+
+        if (questions == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return new ResponseEntity(objectMapper.writeValueAsString(questions),HttpStatus.OK);
+    }
     @DeleteMapping(value = "{set_id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteQuestionSet(@PathVariable("set_id") String setId) {
         boolean result = questionSetService.deleteQuestionSet(setId);

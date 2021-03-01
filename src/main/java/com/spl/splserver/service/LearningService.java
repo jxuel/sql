@@ -7,5 +7,8 @@ import com.spl.splserver.POJO.LearnState;
     All available operations to update learning state
  */
 public interface LearningService {
-    boolean setRepeatDate(String questionId, LearnState learnState);
+    boolean setRepeatChance(LearnState preState, LearnState curState);
+    boolean setRepeatDate(LearnState learnState);
+
+    void updateLearnState(String questionId, LearnState learnState);
 }

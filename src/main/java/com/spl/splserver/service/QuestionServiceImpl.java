@@ -53,6 +53,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question createQuestion(Question question) {
+        question.setRepeatChance(0.5F);
         return questionRepository.save(question);
     }
 

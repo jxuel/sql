@@ -1,6 +1,8 @@
 package com.spl.splserver.service;
 
+import com.spl.splserver.entity.Question;
 import com.spl.splserver.entity.QuestionSet;
+import com.spl.splserver.repository.QuestionRepository;
 import com.spl.splserver.repository.QuestionSetRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,17 @@ import java.util.List;
 public class QuestionSetServiceImpl implements QuestionSetService{
     @Autowired
     final QuestionSetRepository questionSetRepository;
+    final QuestionRepository questionRepository;
 
-    public QuestionSetServiceImpl(QuestionSetRepository questionSetRepository) {
+    public QuestionSetServiceImpl(QuestionSetRepository questionSetRepository, QuestionRepository questionRepository) {
         this.questionSetRepository = questionSetRepository;
+        this.questionRepository = questionRepository;
     }
 
+    @Override
+    public List<Question> getTestSet(String id, Integer quantity) {
+        return questionRepository.findByChanceAndSetId(id, quantity);
+    }
 
     @Override
     public QuestionSet createSingleQuestionSet(QuestionSet questionSet) {
