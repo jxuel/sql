@@ -17,6 +17,19 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+    AuthController
+
+    Endpoint:
+        /auth/signin
+            POST                 user log in
+
+        /auth/signup
+            POST                  user register
+
+ */
+
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
