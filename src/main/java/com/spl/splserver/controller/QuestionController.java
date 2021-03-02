@@ -2,11 +2,9 @@ package com.spl.splserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.spl.splserver.POJO.AnswerCheckDTO;
 import com.spl.splserver.POJO.LearnState;
 import com.spl.splserver.entity.Question;
-import com.spl.splserver.entity.QuestionSet;
 import com.spl.splserver.service.LearningService;
 import com.spl.splserver.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 /*
     QuestionController
 

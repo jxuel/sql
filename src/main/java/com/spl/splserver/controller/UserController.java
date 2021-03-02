@@ -24,10 +24,4 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/{user_id}/questionset", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllQuestionSet(@PathVariable("user_id") String userId) {
-        List<QuestionSet> sets = userService.getAllQuestionSetId(userId);
-        return new ResponseEntity<>(sets,HttpStatus.OK);
-    }
-
 }

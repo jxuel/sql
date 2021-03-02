@@ -71,7 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getAllQuestionsBySet(String setId) {
-        return null;
+        return questionRepository.findBySetId(setId);
     }
 
     @Override

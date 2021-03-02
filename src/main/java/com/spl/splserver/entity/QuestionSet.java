@@ -16,7 +16,7 @@ public class QuestionSet {
     @MongoId(value = FieldType.OBJECT_ID)
     private String id;
     private String name;
-    @Field(name = "owner_Id")
+    @Field(name = "owner_id")
     private String ownerId;
     private Integer score;
     private Integer quantity;

@@ -76,10 +76,7 @@ public class QuestionSetController {
         if(result == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        String jsonArray = objectMapper.writeValueAsString(result);
-        return new ResponseEntity<>(jsonArray,HttpStatus.OK);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
     @GetMapping(value = "{set_id}",produces = MediaType.APPLICATION_JSON_VALUE)

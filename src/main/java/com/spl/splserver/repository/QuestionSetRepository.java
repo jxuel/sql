@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface QuestionSetRepository extends MongoRepository<QuestionSet, ObjectId> {
-    @Query("{ 'owner_id' : ?0 }")
+    @Query("{'owner_id' : ?0 }")
     List<QuestionSet> findByOwnerId(String ownerId);
 }
