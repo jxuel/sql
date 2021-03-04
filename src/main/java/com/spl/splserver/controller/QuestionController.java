@@ -104,7 +104,7 @@ public class QuestionController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        if(mode == "test") {
+        if(mode.equals("test")) {
             learningService.updateLearnState(questionId, result);
         }
 

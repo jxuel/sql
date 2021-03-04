@@ -100,7 +100,7 @@ public class LearningServiceImpl implements LearningService {
 
         boolean dataUpdated = this.setRepeatDate(learnState);
         boolean chanceUpdated = this.setRepeatChance(preState, learnState);
-        if(dataUpdated && chanceUpdated)
+        if (dataUpdated && chanceUpdated)
             questionRepository.updateLearnState(questionId, learnState);
     }
 
@@ -135,11 +135,11 @@ public class LearningServiceImpl implements LearningService {
                 nextRepeatDate = reviewDate.plus(2, ChronoUnit.HOURS);
             } else {
                 long pastTime = ChronoUnit.MINUTES.between(lastReviewedAt.toInstant(), reviewedAt.toInstant());
-                if(pastTime >= 120) {
+                if (pastTime >= 120) {
                     nextRepeatDate = reviewDate.plus(2, ChronoUnit.HOURS);
                 } else {
-                    if(pastTime/2 >= 30) {
-                        nextRepeatDate = reviewDate.plus(pastTime/2, ChronoUnit.MINUTES);
+                    if (pastTime / 2 >= 30) {
+                        nextRepeatDate = reviewDate.plus(pastTime / 2, ChronoUnit.MINUTES);
                     } else {
                         nextRepeatDate = reviewDate.plus(30, ChronoUnit.MINUTES);
                     }
@@ -148,7 +148,7 @@ public class LearningServiceImpl implements LearningService {
 
         }
 
-        if(nextRepeatDate == null)
+        if (nextRepeatDate == null)
             return false;
 
         learnState.setReviewedAt(reviewedAt);
@@ -159,23 +159,30 @@ public class LearningServiceImpl implements LearningService {
 
     @Override
     public boolean setRepeatChance(LearnState preState, LearnState curState) {
-        Date nextRepeatAt = curState.getRepeatAt();
         Float repeatChance = Float.MAX_VALUE;
-        if (ChronoUnit.DAYS.between(new Date().toInstant(), nextRepeatAt.toInstant()) <= 0) {
-            repeatChance = 1.0F;
+        Float preRepeatChance = preState.getRepeatChance();
+        Integer curScore = curState.getScore();
+        Integer preScore = Optional.ofNullable(curState.getLastScore()).orElse(0);
+        long scheduledInterval, realInterval;
+        if (preState.getReviewedAt() != null) {
+            scheduledInterval = ChronoUnit.SECONDS.between(preState.getReviewedAt().toInstant(), preState.getRepeatAt().toInstant());
+            realInterval = ChronoUnit.SECONDS.between(preState.getReviewedAt().toInstant(), curState.getReviewedAt().toInstant());
         } else {
-            Float preRepeatChance = preState.getRepeatChance();
-            Integer curScore = curState.getScore();
-            Integer preScore = Optional.ofNullable(curState.getLastScore()).orElse(0);
-
-            long scheduledInterval = ChronoUnit.SECONDS.between(preState.getReviewedAt().toInstant(),preState.getRepeatAt().toInstant());
-            long realInterval = ChronoUnit.SECONDS.between(preState.getReviewedAt().toInstant(),curState.getReviewedAt().toInstant());
-            double intervalPercentage = Math.tan((double) realInterval/scheduledInterval);
-
-            repeatChance = preRepeatChance * 0.5F + (float)intervalPercentage * (float)Math.tanh((double)(preScore - curScore)/100);
-
+            scheduledInterval = 5;
+            realInterval = 1;
         }
-        if(repeatChance == Float.MAX_VALUE)
+        double intervalPercentage = Math.tan((double) realInterval / scheduledInterval);
+        if (preScore == curScore) {
+            if (curScore != 100) {
+                repeatChance = preRepeatChance + (float) intervalPercentage * (float) Math.tanh((double) (100 - curScore) / 100);
+            } else {
+                repeatChance = preRepeatChance * 0.7F + (float) intervalPercentage * (float) Math.tanh((double) curScore / 100);
+            }
+        } else {
+            repeatChance = preRepeatChance * 0.8F + (float) intervalPercentage * (float) Math.tanh((double) (preScore - curScore) / 100);
+        }
+
+        if (repeatChance == Float.MAX_VALUE)
             return false;
         curState.setRepeatChance(repeatChance);
 
